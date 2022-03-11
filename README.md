@@ -15,8 +15,19 @@ Requirements
 
 Required Dataset
 =
-1. The data structure of Cifar10, Cifar100, ImageNet or any other datasets look like below. Please modify the dataloader at 
+1. The data structure of Cifar10, Cifar100, ImageNet or any other datasets look like below. Please modify the dataloader at `SSAH-Adversarial-master/main.py/` accordingly for your dataset structure.
 
+```
+/dataset/
+├── Cifar10
+│   │   ├── cifar-10-python.tar.gz
+├── Cifar-100-python
+│   │   ├── cifar-100-python.tar.gz
+├── imagenet
+│   ├── val
+│   │   ├── n02328150
+
+```
 
 Citation
 =
