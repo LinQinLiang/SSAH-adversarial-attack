@@ -34,7 +34,14 @@ Experiments
 =
 (1)Attack the Models Trained on Cifar10
 -
-
+```
+CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/cifar10-r20.sh
+```
+(2)Attack the Models Trained on Cifar100
+-
+```
+CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/cifar100-r20.sh
+```
 
 Citation
 =
