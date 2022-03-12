@@ -42,6 +42,11 @@ CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/cifar10-r20.sh
 ```
 CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/cifar100-r20.sh
 ```
+(2)Attack the Models Trained on Imagenet_val
+-
+```
+CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/Imagenet_val-r50.sh
+```
 
 Citation
 =
