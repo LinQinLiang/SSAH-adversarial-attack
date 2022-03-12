@@ -51,13 +51,14 @@ CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/Imagenet_val-r50.sh
 Citation
 =
 if the code or method help you in the research, please cite the following paper:
-```
-@InProceedings(,
-author = {},
-title = {Frequency-driven Imperceptible Adversarial Attack on Semantic Similarity},
-booktitle = {IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-month = {june},
-year = {2022}
+```js
+@InProceedings(luo2022ssah,
+    author = {Luo, cheng and Lin, Qinliang and Xie, weicheng and Wu, Bizhu and Xie, Jinheng and Shen, LinLin},
+    title = {Frequency-driven Imperceptible Adversarial Attack on Semantic Similarity},
+    booktitle = {IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month = {june},
+    year = {2022}
 }
 ```
+
 
