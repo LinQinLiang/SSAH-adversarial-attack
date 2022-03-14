@@ -32,7 +32,7 @@ Required Dataset
 
 Experiments
 =
-We trained a resnet20 model with 92.6% accuracy with CIFAR1010 and a resnet20 model with 69.63% accuracy with CIFAR100. If you want to have a test, you can download our pre-trained models with the [Google Drivers](https://drive.google.com/drive/folders/1SrNrh7o7Ocok7w9ENuXROy9p_bC2IJVj?usp=sharing).
+We trained a resnet20 model with 92.6% accuracy with CIFAR1010 and a resnet20 model with 69.63% accuracy with CIFAR100. If you want to have a test, you can download our pre-trained models with the [Google Drivers](https://drive.google.com/drive/folders/1SrNrh7o7Ocok7w9ENuXROy9p_bC2IJVj?usp=sharing). If you want to use our algorithm to attack your own trained model, you can always replace our models in the file ```checkpoints```.
 
 (1)Attack the Models Trained on Cifar10
 -
