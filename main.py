@@ -4,12 +4,15 @@ import random
 import argparse
 from collections import OrderedDict
 import torchvision
+import torchvision.utils as vutils
+import os
 
 from utils import *
 from checkpoints.resnet import ResNet
 from attack.ssah_attack import *
 from utils.eval_metric_utils import *
 from utils.auxiliary_utils import *
+from utils.fid_score import return_fid
 
 
 def parse_arg():
@@ -21,6 +24,15 @@ def parse_arg():
     parser.add_argument('--perturb_mode', type=str, default='SSAH', help='attack method')
     parser.add_argument('--max_epoch', type=int, default=1, help='always 1 in attack')
     parser.add_argument('--workers', type=int, default=8, help='num workers to load img')
+    parser.add_argument('--wavelet', type=str, default='haar', help='candidate: Daubechies, Cohen')
+
+    # SSAH Attack Parameters
+    parser.add_argument('--num_iteration', type=int, default=150, help='MAX NUMBER ITERATION')
+    parser.add_argument('--learning_rate', type=float, default=0.001, help='LEARNING RATE')
+    parser.add_argument('--m', type=float, default=0.2, help='MARGIN')
+    parser.add_argument('--alpha', type=float, default=1.0, help='HYPER PARAMETER FOR ADV COST')
+    parser.add_argument('--beta', type=float, default=0.1, help='HYPER PARAMETER FOR LOW FREQUENCY CONSTRAINT')
+    parser.add_argument('--outdir', type=str, default='../../result', help='dir to save the attack examples')
 
     args = parser.parse_args()
 
@@ -29,7 +41,7 @@ def parse_arg():
 
 def main():
     opt = parse_arg()
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda")
 
     if opt.seed != -1:
         print('set seed : ', opt.seed)
@@ -46,13 +58,13 @@ def main():
     ))
 
     if opt.classifier == 'resnet20' and opt.dataset == 'cifar10':
-        path = './checkpoints/cifar10-r20.pth.tar'
+        path = '../../checkpoints/cifar10-r20.pth.tar'
         checkpoint = torch.load(path)
         state = checkpoint['state_dict']
         classifier = ResNet(20, 10)
         classifier.load_state_dict(state)
     elif opt.classifier == 'resnet20' and opt.dataset == 'cifar100':
-        path = './checkpoints/cifar100-r20.pth.tar'
+        path = '../../checkpoints/cifar100-r20.pth.tar'
         checkpoint = torch.load(path)
         state = checkpoint['state_dict']
         classifier = ResNet(20, 100)
@@ -82,20 +94,24 @@ def attack(data, classifier, opt):
     best_lowFre = 0
     total_img = 0
     att_suc_img = 0
+    device = torch.device('cuda')
 
     att = SSAH(model=classifier,
-               num_iteration=150,
-               learning_rate=0.001,
+               num_iteration=opt.num_iteration,
+               learning_rate=opt.learning_rate,
                device=torch.device('cuda'),
                Targeted=False,
                dataset=opt.dataset,
-               m=0.2,
-               alpha=1,
-               beta=0.1)
+               m=opt.m,
+               alpha=opt.alpha,
+               beta=opt.beta,
+               wave='haar')
 
     for batch, (inputs, targets) in enumerate(data):
         # img has true prediction label
-        common_id = common(targets, predict(classifier, inputs.cuda(), opt))
+        inputs = inputs.to(device)
+        targets = targets.to(device)
+        common_id = common(targets, predict(classifier, inputs, opt))
         total_img += len(common_id)
         inputs = inputs[common_id].cuda()
         targets = targets[common_id].cuda()
@@ -109,22 +125,44 @@ def attack(data, classifier, opt):
         adv = adv[att_suc_id]
         inputs = inputs[att_suc_id]
 
-        lp = LpDistance(inputs, adv)
+        lp = LpDistance(inputs, adv, opt)
         best_l2 += lp.Lp2()
         best_inf += lp.Lpinf()
         best_lowFre += lp.LowFreNorm()
 
-        print("Evaluating Adversarial images of {} dataset({} images) with perturb mode:{} :".format(
-            opt.dataset, total_img, opt.perturb_mode))
-        print("Batch={:<5} "
-              "Fooling Rate: {:.2f}% "
-              "L2 Norm: {:^3} "
-              "Lp Norm: {:^3} "
-              "Low Frequency Norm: {:^3}".format(batch,
-                                                 100.0 * att_suc_img / total_img,
-                                                 best_l2 / att_suc_img,
-                                                 best_inf / att_suc_img,
-                                                 best_lowFre / att_suc_img))
+        # Test the fid Value：we save the ori and adv img into .png profile and test them use fid
+        # save the 5k imgs to test the fid
+        if batch == 0:
+            benign_img = os.path.join(opt.outdir, opt.dataset + '/' + 'benign-SSA/')
+            adv_img = os.path.join(opt.outdir, opt.dataset + '/' + 'adv-SSA/')
+            if not os.path.exists(benign_img):
+                os.makedirs(benign_img)
+            if not os.path.exists(adv_img):
+                os.makedirs(adv_img)
+            for id in range(adv.shape[0]):
+                vutils.save_image(inputs[id].detach(),
+                                  '%s/%5d.png' % (benign_img, id),
+                                  normalize=True,
+                                  )
+                vutils.save_image(adv[id].detach(),
+                                  '%s/%5d.png' % (adv_img, id),
+                                  normalize=True,
+                                  )
+            fid = return_fid(benign_img, adv_img)
+
+    print("Evaluating Adversarial images of {} dataset({} images) with perturb mode:{} :".format(
+        opt.dataset, total_img, opt.perturb_mode))
+    print("Batch={:<5} "
+          "Fooling Rate: {:.2f}% "
+          "L2 Norm: {:.2f} "
+          "Lp Norm: {:.2f} "
+          "Low Frequency Norm: {:.2f} "
+          "FID Value: {:.2f}".format(batch,
+                                     100.0 * att_suc_img / total_img,
+                                     best_l2 / att_suc_img,
+                                     best_inf / att_suc_img,
+                                     best_lowFre / att_suc_img,
+                                     fid))
 
 
 if __name__ == '__main__':
