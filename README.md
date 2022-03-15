@@ -54,6 +54,7 @@ CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/Imagenet_val-r50.sh
 ![example](https://github.com/LinQinLiang/SSAH-adversarial-attack/blob/main/imgs/img.png)
 
 ***Results on CIFAR10***
+Here we offer some experiment results. You can get more results in our paper.
 -
 |  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | LF | Paper |
 |  ----  | ----  |  ----  | ----  |   ----  | ----  |   ----  | ----  | 
