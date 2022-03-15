@@ -72,7 +72,6 @@ Here we offer some experiment results. You can get more results in our paper.
 Citation
 =
 if the code or method help you in the research, please cite the following paper:
-```js
 @InProceedings(luo2022ssah,
     author = {Luo, cheng and Lin, Qinliang and Xie, weicheng and Wu, Bizhu and Xie, Jinheng and Shen, LinLin},
     title = {Frequency-driven Imperceptible Adversarial Attack on Semantic Similarity},
@@ -80,6 +79,6 @@ if the code or method help you in the research, please cite the following paper:
     month = {june},
     year = {2022}
 }
-```
+
 
 
