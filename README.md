@@ -53,6 +53,21 @@ CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/Imagenet_val-r50.sh
 -
 ![example](https://github.com/LinQinLiang/SSAH-adversarial-attack/blob/main/imgs/img.png)
 
+***Results on CIFAR10***
+-
+|  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | LF | Paper |
+|  ----  | ----  |  ----  | ----  |   ----  | ----  |   ----  | ----  | 
+| BIM  | White Box |  100.0 |   0.85   |   0.03     |   14.85     |  0.25       |    [ICLR2017](https://arxiv.org/pdf/1607.02533.pdf)    |
+| PGD  | White Box|   100.0 |  1.28|  0.03     |   27.86    |   0.34    |    [arxiv link](https://arxiv.org/pdf/1706.06083.pdf)     |
+| MIM  | White Box|   100.0 | 1.90  |   0.03     |     26.00  |   0.48    |     [CVPR2018](https://openaccess.thecvf.com/content_cvpr_2018/papers/Dong_Boosting_Adversarial_Attacks_CVPR_2018_paper.pdf)   |
+| AutoAttack | White Box |100.0 |  1.91     |    0.03    |    34.93   |  0.61     |     [ICML2020](https://arxiv.org/pdf/2003.01690.pdf)    |
+| AdvDrop | White Box | 99.92| 0.90      |   0.07    |   16.34    |   0.34    |     [ICCV2021](https://openaccess.thecvf.com/content/ICCV2021/papers/Duan_AdvDrop_Adversarial_Attack_to_DNNs_by_Dropping_Information_ICCV_2021_paper.pdf)    |
+| C&W  | White Box| 100.0 |   0.39   |     0.06  |   8.23    |   0.11    |     [IEEE SSP2017](https://arxiv.org/pdf/1608.04644.pdf)   |
+| PerC-AL  | White Box | 98.29  | 0.86    |   0.18    |    9.58   |  0.15     |    [CVPR2020](https://openaccess.thecvf.com/content_CVPR_2020/papers/Zhao_Towards_Large_Yet_Imperceptible_Adversarial_Image_Perturbations_With_Perceptual_Color_CVPR_2020_paper.pdf)     |
+| **SSA** | White Box |99.96  |  0.29    |     0.02  |    5.73   |   0.07    |     [CVPR2022]()    |
+| **SSAH** | White Box | 99.94 |   0.26    |  0.02     |   5.03    |    0.03   |    [CVPR2022]()     |
+
+
 Citation
 =
 if the code or method help you in the research, please cite the following paper:
