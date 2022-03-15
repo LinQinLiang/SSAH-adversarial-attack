@@ -51,7 +51,7 @@ CUDA_VISIBLE_DEVICES=0,1 bash scripts/cifar/Imagenet_val-r50.sh
 ```
 ***Example***
 -
-![example](https://github.com/LinQinLiang/SSAH-adversarial-attack/blob/main/imgs/overview.png)
+![example](https://github.com/LinQinLiang/SSAH-adversarial-attack/blob/main/imgs/img.png)
 
 Citation
 =
