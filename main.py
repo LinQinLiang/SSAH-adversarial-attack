@@ -89,9 +89,9 @@ def main():
 
 
 def attack(data, classifier, opt):
-    best_l2 = 0
-    best_inf = 0
-    best_lowFre = 0
+    l2 = 0
+    inf = 0
+    lowFre = 0
     total_img = 0
     att_suc_img = 0
     device = torch.device('cuda')
@@ -126,9 +126,9 @@ def attack(data, classifier, opt):
         inputs = inputs[att_suc_id]
 
         lp = LpDistance(inputs, adv, opt)
-        best_l2 += lp.Lp2()
-        best_inf += lp.Lpinf()
-        best_lowFre += lp.LowFreNorm()
+        l2 += lp.Lp2()
+        inf += lp.Lpinf()
+        lowFre += lp.LowFreNorm()
 
         # Test the fid Value：we save the ori and adv img into .png profile and test them use fid
         # save the 5k imgs to test the fid
