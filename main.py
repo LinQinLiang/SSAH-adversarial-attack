@@ -159,9 +159,9 @@ def attack(data, classifier, opt):
           "Low Frequency Norm: {:.2f} "
           "FID Value: {:.2f}".format(batch,
                                      100.0 * att_suc_img / total_img,
-                                     best_l2 / att_suc_img,
-                                     best_inf / att_suc_img,
-                                     best_lowFre / att_suc_img,
+                                     l2 / att_suc_img,
+                                     inf / att_suc_img,
+                                     lowFre / att_suc_img,
                                      fid))
 
 
