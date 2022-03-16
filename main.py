@@ -133,7 +133,7 @@ def attack(data, classifier, opt):
 
         # Test the fid Value：we save the ori and adv img into .png profile and test them use fid
         # save the 5k imgs to test the fid
-        if not opt.fid:
+        if opt.test_fid:
             if batch == 0:
                 benign_img = os.path.join(opt.outdir, opt.dataset + '/' + 'benign-SSA/')
                 adv_img = os.path.join(opt.outdir, opt.dataset + '/' + 'adv-SSA/')
