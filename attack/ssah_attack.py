@@ -123,5 +123,5 @@ class SSAH(nn.Module):
             total_cost.backward()
             optimizer.step()
 
-        best_adv = 0.5 * (torch.tanh(modifier.detach()) + 1)
-        return best_adv
+        adv = 0.5 * (torch.tanh(modifier.detach()) + 1)
+        return adv
