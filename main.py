@@ -24,7 +24,7 @@ def parse_arg():
     parser.add_argument('--perturb_mode', type=str, default='SSAH', help='attack method')
     parser.add_argument('--max_epoch', type=int, default=1, help='always 1 in attack')
     parser.add_argument('--workers', type=int, default=8, help='num workers to load img')
-    parser.add_argument('--wavelet', type=str, default='haar', choices=['Daubechies', 'Cohen'])
+    parser.add_argument('--wavelet', type=str, default='haar', choices=['haar','Daubechies', 'Cohen'])
 
     # SSAH Attack Parameters
     parser.add_argument('--num_iteration', type=int, default=150, help='MAX NUMBER ITERATION')
