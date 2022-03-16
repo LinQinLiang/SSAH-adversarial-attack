@@ -24,7 +24,8 @@ def parse_arg():
     parser.add_argument('--perturb_mode', type=str, default='SSAH', help='attack method')
     parser.add_argument('--max_epoch', type=int, default=1, help='always 1 in attack')
     parser.add_argument('--workers', type=int, default=8, help='num workers to load img')
-    parser.add_argument('--wavelet', type=str, default='haar', choices=['haar','Daubechies', 'Cohen'])
+    parser.add_argument('--wavelet', type=str, default='haar', choices=['haar', 'Daubechies', 'Cohen'])
+    parser.add_argument('--test_fid', type=bool, default=False, help='test fid value')
 
     # SSAH Attack Parameters
     parser.add_argument('--num_iteration', type=int, default=150, help='MAX NUMBER ITERATION')
@@ -132,23 +133,26 @@ def attack(data, classifier, opt):
 
         # Test the fid Value：we save the ori and adv img into .png profile and test them use fid
         # save the 5k imgs to test the fid
-        if batch == 0:
-            benign_img = os.path.join(opt.outdir, opt.dataset + '/' + 'benign-SSA/')
-            adv_img = os.path.join(opt.outdir, opt.dataset + '/' + 'adv-SSA/')
-            if not os.path.exists(benign_img):
-                os.makedirs(benign_img)
-            if not os.path.exists(adv_img):
-                os.makedirs(adv_img)
-            for id in range(adv.shape[0]):
-                vutils.save_image(inputs[id].detach(),
-                                  '%s/%5d.png' % (benign_img, id),
-                                  normalize=True,
-                                  )
-                vutils.save_image(adv[id].detach(),
-                                  '%s/%5d.png' % (adv_img, id),
-                                  normalize=True,
-                                  )
-            fid = return_fid(benign_img, adv_img)
+        if not opt.fid:
+            if batch == 0:
+                benign_img = os.path.join(opt.outdir, opt.dataset + '/' + 'benign-SSA/')
+                adv_img = os.path.join(opt.outdir, opt.dataset + '/' + 'adv-SSA/')
+                if not os.path.exists(benign_img):
+                    os.makedirs(benign_img)
+                if not os.path.exists(adv_img):
+                    os.makedirs(adv_img)
+                for id in range(adv.shape[0]):
+                    vutils.save_image(inputs[id].detach(),
+                                      '%s/%5d.png' % (benign_img, id),
+                                      normalize=True,
+                                      )
+                    vutils.save_image(adv[id].detach(),
+                                      '%s/%5d.png' % (adv_img, id),
+                                      normalize=True,
+                                      )
+                fid = return_fid(benign_img, adv_img)
+        else:
+            fid = 0
 
     print("Evaluating Adversarial images of {} dataset({} images) with perturb mode:{} :".format(
         opt.dataset, total_img, opt.perturb_mode))
