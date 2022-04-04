@@ -62,7 +62,7 @@ Here we offer some experiment results. You can get more results in our paper.
 
 ***Results on CIFAR10***
 -
-|  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | LF |SSIM | Paper |
+|  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | SSIM | LF | Paper |
 |  ----  | ----  |  ----  | ----  |   ----  | ---- |   ----  |   ----  | ----  | 
 | BIM  | White Box |  100.0 |   0.85   |   0.03     |   14.85   |0.85  |  0.25       |    [ICLR2017](https://arxiv.org/pdf/1607.02533.pdf)    |
 | PGD  | White Box|   100.0 |  1.28|  0.03     |   27.86  |0.79   |   0.34    |    [arxiv link](https://arxiv.org/pdf/1706.06083.pdf)     |
@@ -76,7 +76,7 @@ Here we offer some experiment results. You can get more results in our paper.
 
 ***Results on CIFAR100***
 -
-|  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | LF |SSIM | Paper |
+|  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | SSIM | LF | Paper |
 |  ----  | ----  |  ----  | ----  |   ----  | ---- |   ----  |   ----  | ----  | 
 | BIM  | White Box |  99.99 |0.85 |0.03 |15.26 |0.83  |0.32   |    [ICLR2017](https://arxiv.org/pdf/1607.02533.pdf)    |
 | PGD  | White Box|   99.99 |1.29 |0.03 |27.74 |0.77  |0.42    |    [arxiv link](https://arxiv.org/pdf/1706.06083.pdf)     |
