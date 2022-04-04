@@ -25,11 +25,11 @@ Required Dataset
 
 ```
 /dataset/
-├── Cifar10
+├── cifar10
 │   │   ├── cifar-10-python.tar.gz
-├── Cifar-100-python
+├── cifar-100-python
 │   │   ├── cifar-100-python.tar.gz
-├── imagenet
+├── ILSVRC2012
 │   ├── val
 │   │   ├── n02328150
 
