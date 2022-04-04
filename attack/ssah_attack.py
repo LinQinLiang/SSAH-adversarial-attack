@@ -23,7 +23,8 @@ class SSAH(nn.Module):
                  dataset: str = 'cifar10',
                  m: float = 0.2,
                  alpha: float = 1,
-                 beta: float = 0.1) -> None:
+                 beta: float = 0.1,
+                 wave: str = 'haar',) -> None:
         super(SSAH, self).__init__()
         self.model = model
         self.device = device
@@ -42,8 +43,8 @@ class SSAH(nn.Module):
 
         self.normalize_fn = normalize_fn(self.dataset)
 
-        self.DWT = DWT_2D_tiny(wavename='haar')
-        self.IDWT = IDWT_2D_tiny(wavename='haar')
+        self.DWT = DWT_2D_tiny(wavename= wave)
+        self.IDWT = IDWT_2D_tiny(wavename= wave)
 
     def fea_extract(self, inputs: torch.Tensor) -> torch.Tensor:
         fea = self.encoder_fea(inputs)
