@@ -63,7 +63,7 @@ Here we offer some experiment results. You can get more results in our paper.
 ***Results on CIFAR10***
 -
 |  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | LF |SSIM | Paper |
-|  ----  | ----  |  ----  | ----  |   ----  | ----  |   ----  | ----  | 
+|  ----  | ----  |  ----  | ----  |   ----  | ---- |   ----  |   ----  | ----  | 
 | BIM  | White Box |  100.0 |   0.85   |   0.03     |   14.85   |0.85  |  0.25       |    [ICLR2017](https://arxiv.org/pdf/1607.02533.pdf)    |
 | PGD  | White Box|   100.0 |  1.28|  0.03     |   27.86  |0.79   |   0.34    |    [arxiv link](https://arxiv.org/pdf/1706.06083.pdf)     |
 | MIM  | White Box|   100.0 | 1.90  |   0.03     |     26.00 |-  |   0.48    |     [CVPR2018](https://openaccess.thecvf.com/content_cvpr_2018/papers/Dong_Boosting_Adversarial_Attacks_CVPR_2018_paper.pdf)   |
@@ -77,7 +77,7 @@ Here we offer some experiment results. You can get more results in our paper.
 ***Results on CIFAR100***
 -
 |  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | LF |SSIM | Paper |
-|  ----  | ----  |  ----  | ----  |   ----  | ----  |   ----  | ----  | 
+|  ----  | ----  |  ----  | ----  |   ----  | ---- |   ----  |   ----  | ----  | 
 | BIM  | White Box |  99.99 |0.85 |0.03 |15.26 |0.83  |0.32   |    [ICLR2017](https://arxiv.org/pdf/1607.02533.pdf)    |
 | PGD  | White Box|   99.99 |1.29 |0.03 |27.74 |0.77  |0.42    |    [arxiv link](https://arxiv.org/pdf/1706.06083.pdf)     |
 | MIM  | White Box|   99.99 |1.87 |0.03 |26.04 |- |0.65    |     [CVPR2018](https://openaccess.thecvf.com/content_cvpr_2018/papers/Dong_Boosting_Adversarial_Attacks_CVPR_2018_paper.pdf)    |
@@ -92,7 +92,7 @@ Here we offer some experiment results. You can get more results in our paper.
 ***Results on ImageNet***
 -
 |  Name   | Knowledge  |  ASR(%)  |  L2 |  Linf | FID | SSIM| LF | Paper |
-|  ----  | ----  |  ----  | ----  |   ----  | ----  |   ----  | ----  | 
+|  ----  | ----  |  ----  | ----  |   ----  | ---- |   ----  |   ----  | ----  | 
 | BIM  | White Box |   99.98 |26.85 |0.03 |51.92 |0.73 |11.18   |    [ICLR2017](https://arxiv.org/pdf/1607.02533.pdf)    |
 | PGD  | White Box|  99.98 |54.97 |0.03 |45.51 |0.77 |17.41  |    [arxiv link](https://arxiv.org/pdf/1706.06083.pdf)     |
 | MIM  | White Box|   99.98 |91.78 |0.03 |101.88 |- |39.42   |     [CVPR2018](https://openaccess.thecvf.com/content_cvpr_2018/papers/Dong_Boosting_Adversarial_Attacks_CVPR_2018_paper.pdf)    |
