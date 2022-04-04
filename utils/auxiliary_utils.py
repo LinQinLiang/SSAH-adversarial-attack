@@ -67,8 +67,7 @@ def load_cifar100(opt):
 
 
 def load_imagenet_val(opt):
-    # path = 'dataset/imagenet_val/val/'
-    path = '/data/lql/Adversarial_Final/dataset/imagenet_val/val/'
+    path = 'dataset/ILSVRC2012/val/'
     transform = transforms.Compose([transforms.Resize(256),
                                     transforms.CenterCrop(224),
                                     transforms.ToTensor()])
