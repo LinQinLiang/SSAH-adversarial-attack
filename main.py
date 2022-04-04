@@ -21,19 +21,19 @@ def parse_arg():
     parser.add_argument('--dataset', type=str, default='cifar10', help='data to attack')
     parser.add_argument('--classifier', type=str, default='resnet20', help='model to attack')
     parser.add_argument('--seed', type=int, default=18, help='random seed')
-    parser.add_argument('--perturb_mode', type=str, default='SSAH', help='attack method')
-    parser.add_argument('--max_epoch', type=int, default=1, help='always 1 in attack')
+    parser.add_argument('--perturb-mode', type=str, default='SSAH', help='attack method')
+    parser.add_argument('--max-epoch', type=int, default=1, help='always 1 in attack')
     parser.add_argument('--workers', type=int, default=8, help='num workers to load img')
     parser.add_argument('--wavelet', type=str, default='haar', choices=['haar', 'Daubechies', 'Cohen'])
-    parser.add_argument('--test_fid', type=bool, default=False, help='test fid value')
+    parser.add_argument('--test-fid', action='store_true', help='test fid value')
 
     # SSAH Attack Parameters
-    parser.add_argument('--num_iteration', type=int, default=150, help='MAX NUMBER ITERATION')
-    parser.add_argument('--learning_rate', type=float, default=0.001, help='LEARNING RATE')
+    parser.add_argument('--num-iteration', type=int, default=150, help='MAX NUMBER ITERATION')
+    parser.add_argument('--learning-rate', type=float, default=0.001, help='LEARNING RATE')
     parser.add_argument('--m', type=float, default=0.2, help='MARGIN')
     parser.add_argument('--alpha', type=float, default=1.0, help='HYPER PARAMETER FOR ADV COST')
     parser.add_argument('--beta', type=float, default=0.1, help='HYPER PARAMETER FOR LOW FREQUENCY CONSTRAINT')
-    parser.add_argument('--outdir', type=str, default='../../result', help='dir to save the attack examples')
+    parser.add_argument('--outdir', type=str, default='result', help='dir to save the attack examples')
 
     args = parser.parse_args()
 
@@ -44,19 +44,22 @@ opt = parse_arg()
 device = torch.device("cuda")
 
 if opt.classifier == 'resnet20' and opt.dataset == 'cifar10':
-    path = '../../checkpoints/cifar10-r20.pth.tar'
+    path = 'checkpoints/cifar10-r20.pth.tar'
     checkpoint = torch.load(path)
     state = checkpoint['state_dict']
     classifier = ResNet(20, 10)
     classifier.load_state_dict(state)
 elif opt.classifier == 'resnet20' and opt.dataset == 'cifar100':
-    path = '../../checkpoints/cifar100-r20.pth.tar'
+    path = 'checkpoints/cifar100-r20.pth.tar'
     checkpoint = torch.load(path)
     state = checkpoint['state_dict']
     classifier = ResNet(20, 100)
     new_state_dict = OrderedDict()
     for k, v in state.items():
-        name = k[7:]  # remove `module.`
+        if 'module.' in k:
+            name = k[7:]  # remove `module.`
+        else:
+            name = k
         new_state_dict[name] = v
     classifier.load_state_dict(new_state_dict)
 elif opt.classifier == 'resnet50' and opt.dataset == 'imagenet_val':
@@ -78,11 +81,9 @@ print("Attack Benign Image of {} dataset({} images) with perturb mode: {} :".for
     opt.dataset, num_images, opt.perturb_mode
 ))
 
-l2 = 0
-inf = 0
-lowFre = 0
 total_img = 0
 att_suc_img = 0
+PerD = PerceptualDistance(opt)
 
 att = SSAH(model=classifier,
            num_iteration=opt.num_iteration,
@@ -112,10 +113,8 @@ for batch, (inputs, targets) in enumerate(data):
     adv = adv[att_suc_id]
     inputs = inputs[att_suc_id]
 
-    lp = LpDistance(inputs, adv, opt)
-    l2 += lp.Lp2()
-    inf += lp.Lpinf()
-    lowFre += lp.LowFreNorm()
+    l2, l_inf, low_fre = PerD.cal_perceptual_distances(inputs,adv)
+    PerD.update(l2, l_inf, low_fre,adv.size(0))
 
     # Test the fid Value：we save the ori and adv img into .png profile and test them use fid
     # save the 5k imgs to test the fid
@@ -140,17 +139,17 @@ for batch, (inputs, targets) in enumerate(data):
     else:
         fid = 0
 
-print("Evaluating Adversarial images of {} dataset({} images) with perturb mode:{} :".format(
-    opt.dataset, total_img, opt.perturb_mode))
-print("Batch={:<5} "
-      "Fooling Rate: {:.2f}% "
-      "L2 Norm: {:.2f} "
-      "Lp Norm: {:.2f} "
-      "Low Frequency Norm: {:.2f} "
-      "FID Value: {:.2f}".format(batch,
-                                 100.0 * att_suc_img / total_img,
-                                 l2 / att_suc_img,
-                                 inf / att_suc_img,
-                                 lowFre / att_suc_img,
-                                 fid))
+    print("Evaluating Adversarial images of {} dataset({} images) with perturb mode:{} :".format(
+        opt.dataset, total_img, opt.perturb_mode))
+    print("Batch={:<5} "
+          "Fooling Rate: {:.2f}% "
+          "L2: {:.2f} "
+          "L_inf: {:.2f} "
+          "Low Frequency: {:.2f} "
+          "FID Value: {:.2f}".format(batch,
+                                     100.0 * att_suc_img / total_img,
+                                     PerD.l2_avg,
+                                     PerD.l_inf_avg,
+                                     PerD.LF_avg,
+                                     fid))
 
