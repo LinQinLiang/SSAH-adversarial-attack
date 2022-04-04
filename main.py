@@ -113,8 +113,8 @@ for batch, (inputs, targets) in enumerate(data):
     adv = adv[att_suc_id]
     inputs = inputs[att_suc_id]
 
-    l2, l_inf, low_fre = PerD.cal_perceptual_distances(inputs,adv)
-    PerD.update(l2, l_inf, low_fre,adv.size(0))
+    l2, l_inf, low_fre, ssim = PerD.cal_perceptual_distances(inputs,adv)
+    PerD.update(l2, l_inf, low_fre, ssim, adv.size(0))
 
     # Test the fid Value：we save the ori and adv img into .png profile and test them use fid
     # save the 5k imgs to test the fid
@@ -145,11 +145,13 @@ for batch, (inputs, targets) in enumerate(data):
           "Fooling Rate: {:.2f}% "
           "L2: {:.2f} "
           "L_inf: {:.2f} "
+          "SSIM: {:.2f} "
           "Low Frequency: {:.2f} "
           "FID Value: {:.2f}".format(batch,
                                      100.0 * att_suc_img / total_img,
                                      PerD.l2_avg,
                                      PerD.l_inf_avg,
+                                     PerD.ssim_avg,
                                      PerD.LF_avg,
                                      fid))
 
