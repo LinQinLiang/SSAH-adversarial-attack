@@ -207,7 +207,7 @@ def fid_inception_v3():
     
     
     # we upload the pth file in the Google drive
-    state_dict = torch.load(os.path.join("../", "pt_inception-2015-12-05-6726825d.pth"))
+    state_dict = torch.load(os.path.join("", "pt_inception-2015-12-05-6726825d.pth"))
     inception.load_state_dict(state_dict)
     return inception
 
