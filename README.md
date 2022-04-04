@@ -12,7 +12,7 @@ Requirements
 * torchvision >= 0.7
 * numpy == 1.19.2
 * Pillow == 8.0.1
-* pywt
+* pywavelets
 
 Required Dataset
 =
