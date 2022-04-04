@@ -1,25 +1,27 @@
-#ImageNet1M
+#ImageNet-1K
+#SSAH
 python  main.py \
         --classifier='resnet50' \
         --dataset='imagenet_val'  \
         --bs=256 \
-        --max_epoch=1 \
+        --max-epoch=1 \
         --wavelet='haar' \
-        --num_iteration=200 \
-        --learning_rate=0.0001 \
+        --num-iteration=200 \
+        --learning-rate=0.0001 \
         --m=0.2 \
         --alpha=1.0 \
         --beta=0.1\
         --seed=8
 
+#SSA
 #python  main.py \
 #        --classifier='resnet50' \
-#        --dataset='imagenet_val'  \
+#        --dataset='imagenet-val'  \
 #        --bs=256 \
-#        --max_epoch=1 \
+#        --max-epoch=1 \
 #        --wavelet='haar' \
-#        --num_iteration=200 \
-#        --learning_rate=0.0001 \
+#        --num-iteration=200 \
+#        --learning-rate=0.0001 \
 #        --m=0.2 \
 #        --alpha=1.0 \
 #        --beta=0.0\
