@@ -3,6 +3,7 @@ import torch.nn.functional as F
 from math import exp
 import numpy as np
 from attack.DWT import *
+from differential_color_functions import rgb2lab_diff, ciede2000_diff
 
 
 class PerceptualDistance(object):
@@ -23,6 +24,8 @@ class PerceptualDistance(object):
         self.ssim_sum = 0
 
         self.count = 0
+        
+        self.device = torch.device('cuda')
 
     def cal_perceptual_distances(self, references, perturbed):
         # l_p norm
@@ -43,8 +46,19 @@ class PerceptualDistance(object):
         low_fre = torch.sum(torch.pow(norm, 2))
 
         ssim = self.cal_ssim(references,perturbed)
+        
+        c = self.cal_color_distance(references,perturbed)
 
-        return l2/N, l_inf/N, low_fre/N, ssim/N
+        return l2/N, l_inf/N, low_fre/N, ssim/N, c
+    
+    def cal_color_distance(self, references,perturbed):
+        reference_lab = rgb2lab_diff(references, self.device)
+        perturbed_lab = rgb2lab_diff(perturbed, self.device)
+        color_distance_map = ciede2000_diff(reference_lab, perturbed_lab, self.device)
+        color_distance_map = color_distance_map.flatten(start_dim=1)
+        norm = torch.norm(color_distance_map, dim=-1)
+        return torch.mean(norm)
+        
 
     def cal_ssim(self, references, perturbed):
         ret = self.SSIM
