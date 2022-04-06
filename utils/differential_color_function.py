@@ -1,3 +1,8 @@
+#Zhengyu Zhao, Zhuoran Liu, Martha Larson,
+# "Towards Large yet Imperceptible Adversarial Image Perturbations with Perceptual Color Distance", CVPR 2020.
+# https://arxiv.org/abs/1911.02466
+#Code apapted from https://github.com/ZhengyuZhao/PerC-Adversarial
+
 import numpy as np
 import torch
 
