@@ -6,6 +6,7 @@ from collections import OrderedDict
 import torchvision
 import torchvision.utils as vutils
 import os
+import logging
 
 from utils import *
 from checkpoints.resnet import ResNet
@@ -18,6 +19,7 @@ from utils.fid_score import return_fid
 def parse_arg():
     parser = argparse.ArgumentParser(description='attack with feature layer and frequency constraint')
     parser.add_argument('--bs', type=int, default=10000, help="batch size")
+    parser.add_argument('--dataset-root', type=str, default='dataset', help='dataset path')
     parser.add_argument('--dataset', type=str, default='cifar10', help='data to attack')
     parser.add_argument('--classifier', type=str, default='resnet20', help='model to attack')
     parser.add_argument('--seed', type=int, default=18, help='random seed')
@@ -34,14 +36,18 @@ def parse_arg():
     parser.add_argument('--alpha', type=float, default=1.0, help='HYPER PARAMETER FOR ADV COST')
     parser.add_argument('--lambda-lf', type=float, default=0.1, help='HYPER PARAMETER FOR LOW FREQUENCY CONSTRAINT')
     parser.add_argument('--outdir', type=str, default='result', help='dir to save the attack examples')
+    parser.add_argument('--exp-name', type=str, default='SSAH', help='Experiment Name')
 
     args = parser.parse_args()
 
     return args
 
-
+# parse and log
 opt = parse_arg()
-device = torch.device("cuda")
+opt.outdir = os.path.join(opt.outdir,opt.exp_name)
+set_logger(opt)
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 if opt.classifier == 'resnet20' and opt.dataset == 'cifar10':
     path = 'checkpoints/cifar10-r20.pth.tar'
@@ -91,7 +97,7 @@ fid = 0
 att = SSAH(model=classifier,
            num_iteration=opt.num_iteration,
            learning_rate=opt.learning_rate,
-           device=torch.device('cuda'),
+           device=device,
            Targeted=False,
            dataset=opt.dataset,
            m=opt.m,
@@ -151,9 +157,11 @@ for batch, (inputs, targets) in enumerate(data):
             del img_list_for_fid
             del adv_img_list_for_fid
 
-    print("Evaluating Adversarial images of {} dataset({} images) with perturb mode:{} :".format(
-        opt.dataset, total_img, opt.perturb_mode))
-    print("Batch={:<5} "
+    infostr = {"Evaluating Adversarial images of {} dataset ({} images) with perturb mode: {} :".format(
+        opt.dataset, total_img, opt.perturb_mode)}
+    logging.info(infostr)
+
+    infostr = {"Batch={:<5} "
           "Fooling Rate: {:.2f}% "
           "L2: {:.2f} "
           "L_inf: {:.2f} "
@@ -167,5 +175,6 @@ for batch, (inputs, targets) in enumerate(data):
                                      PerD.ssim_avg,
                                      PerD.CIEDE2000_avg,
                                      PerD.LF_avg,
-                                     fid))
+                                     fid)}
+    logging.info(infostr)
 
