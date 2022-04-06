@@ -37,8 +37,18 @@ Required Dataset
 
 Experiments
 =
-We trained a resnet20 model with 92.6% accuracy with CIFAR1010 and a resnet20 model with 69.63% accuracy with CIFAR100. If you want to have a test, you can download our pre-trained models with the [Google Drivers](https://drive.google.com/drive/folders/1SrNrh7o7Ocok7w9ENuXROy9p_bC2IJVj?usp=sharing). If you want to use our algorithm to attack your own trained model, you can always replace our models in the file ```checkpoints```.
+We provide six perceptural metrics to measure imperceptibility, including l_2, l_inf, FID, SSIM, CIEDE2000, and LF
+Your can add more metrics in
+```
+/utils/
+├── eval_metric_utils.py
+```
 
+We trained a resnet20 model with 92.6% accuracy with CIFAR1010 and a resnet20 model with 69.63% accuracy with CIFAR100. If you want to have a test, you can download our pre-trained models with the [Google Drivers](https://drive.google.com/drive/folders/1SrNrh7o7Ocok7w9ENuXROy9p_bC2IJVj?usp=sharing). If you want to use our algorithm to attack your own trained model, you can always replace our models in the file ```checkpoints```.
+***If your want to calculate FID, you need download pt_inception-2015-12-05-6726825d.pth in this Google Drive and put it in***
+```
+checkpoints
+```
 (1)Attack the Models Trained on Cifar10
 -
 ```
