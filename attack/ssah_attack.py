@@ -23,7 +23,7 @@ class SSAH(nn.Module):
                  dataset: str = 'cifar10',
                  m: float = 0.2,
                  alpha: float = 1,
-                 beta: float = 0.1,
+                 lambda_lf: float = 0.1,
                  wave: str = 'haar',) -> None:
         super(SSAH, self).__init__()
         self.model = model
@@ -34,7 +34,7 @@ class SSAH(nn.Module):
         self.dataset = dataset
         self.m = m
         self.alpha = alpha
-        self.beta = beta
+        self.lambda_lf = lambda_lf
 
         self.encoder_fea = nn.Sequential(*list(self.model.children())[:-1]).to(self.device)
         self.encoder_fea= nn.DataParallel(self.encoder_fea)
@@ -105,8 +105,11 @@ class SSAH(nn.Module):
             adv_ll = self.IDWT(adv_ll)
 
             pos_sim, neg_sim = self.cal_sim(adv_fea, inputs_fea)
+            # select the most dissimilar one in the first iteration
             if step == 0:
                 pos_neg_sim, indices = self.select_setp1(pos_sim, neg_sim)
+
+            # record the most dissimilar ones by indices and calculate similarity
             else:
                 pos_neg_sim = self.select_step2(pos_sim, neg_sim, indices)
 
@@ -116,9 +119,9 @@ class SSAH(nn.Module):
             w_p = torch.clamp_min(sim_pos.detach() - self.m, min=0)
             w_n = torch.clamp_min(1 + self.m - sim_neg.detach(), min=0)
 
-            adv_cost = self.alpha * torch.sum(torch.clamp(w_p * sim_pos - w_n * sim_neg, min=0))
-            lowFre_cost = self.beta * lowFre_loss(adv_ll, inputs_ll)
-            total_cost = adv_cost + lowFre_cost
+            adv_cost = torch.sum(torch.clamp(w_p * sim_pos - w_n * sim_neg, min=0))
+            lowFre_cost = lowFre_loss(adv_ll, inputs_ll)
+            total_cost = self.alpha * adv_cost + self.lambda_lf * lowFre_cost
 
             optimizer.zero_grad()
             total_cost.backward()
