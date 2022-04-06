@@ -37,7 +37,8 @@ Required Dataset
 
 Experiments
 =
-We provide six perceptural metrics to measure imperceptibility, including l_2, l_inf, FID, SSIM, CIEDE2000, and LF
+We provide six perceptural metrics to measure imperceptibility, including l_2, l_inf, FID, SSIM, CIEDE2000, and LF.
+
 Your can add more metrics in
 ```
 /utils/
