@@ -10,7 +10,7 @@ python  main.py \
         --learning-rate=0.0015 \
         --m=0.2 \
         --alpha=1 \
-        --beta=0.01\
+        --lambda-lf=0.01\
         --seed=8\
         --test-fid
 
@@ -26,6 +26,6 @@ python  main.py \
 #        --learning-rate=0.0015 \
 #        --m=0.2 \
 #        --alpha=1 \
-#        --beta=0.0\
+#        --lambda-lf=0.0\
 #        --seed=8\
 #        --test-fid
