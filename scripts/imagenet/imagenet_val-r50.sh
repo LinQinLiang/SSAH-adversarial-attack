@@ -8,9 +8,9 @@ python  main.py \
         --wavelet='haar' \
         --num-iteration=200 \
         --learning-rate=0.0001 \
-        --m=0.2 \
+        --m=0.0 \
         --alpha=1.0 \
-        --lambda-lf=0.1\
+        --lambda-lf=0.5\
         --seed=8
 
 #SSA
