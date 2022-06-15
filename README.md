@@ -117,18 +117,12 @@ Citation
 =
 if the code or method help you in the research, please cite the following paper:
 ```
-@article{luo2022frequency,
+@inproceedings{luo2022frequency,
   title={Frequency-driven Imperceptible Adversarial Attack on Semantic Similarity},
   author={Luo, Cheng and Lin, Qinliang and Xie, Weicheng and Wu, Bizhu and Xie, Jinheng and Shen, Linlin},
-  journal={arXiv preprint arXiv:2203.05151},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={15315--15324},
   year={2022}
-}
-
-@inproceedings{luo2022frequency,
-title={Frequency-driven Imperceptible Adversarial Attack on Semantic Similarity},
-author={Luo, Cheng and Lin, Qinliang and Xie, Weicheng and Wu, Bizhu and Xie, Jinheng and Shen, Linlin},
-booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-year={2022}
 }
 ```
 
