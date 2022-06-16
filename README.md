@@ -4,7 +4,7 @@ Introduction
 > 
 > **Frequency-driven Imperceptible Adversarial Attack on Semantic Similarity**, ***CVPR 2022***
 > 
-> [[Paper]](https://arxiv.org/abs/2203.05151)
+> [[Paper]](https://openaccess.thecvf.com/content/CVPR2022/html/Luo_Frequency-Driven_Imperceptible_Adversarial_Attack_on_Semantic_Similarity_CVPR_2022_paper.html)
 > 
 ![Overview](https://github.com/LinQinLiang/SSAH-adversarial-attack/blob/main/imgs/overview.png)
 
